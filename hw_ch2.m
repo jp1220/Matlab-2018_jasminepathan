@@ -7,7 +7,7 @@ str1(3)='L';
 str1(11)='P';
 str1
 % b)
-str2='It`s pouring with rain';
+str2='It''s pouring with rain'; % clever eh, though I liked your solution
 str2(6)='r';
 str2(9)='p';
 str2(19)='p';
