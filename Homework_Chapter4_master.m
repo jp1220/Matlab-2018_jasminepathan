@@ -9,6 +9,7 @@ mat1=[5     0     0     0     0; ...
      0     0    15     0     0; ...
      0     0     0    20     0; ...
      0     0     0     0    25];
+ 
 
   mat2=[5     5     5     5     5; ...
     10    10    10    10    10; ...
@@ -103,6 +104,16 @@ mat(:,:,2) = [17     5     9     9    12; ...
 % displays the sum of the four dice. 
 % The program should count the number of rolls until
 % the sum of the four dice is equal to 20.
+roll=ceil(6*rand(1,4));
+numrolls=1;
+sum(roll)
+if sum(roll)~=20
+    while 
+else
+    disp(numrolls)
+    disp(sum(roll))
+    
+
 
 %% and for the brave among you (xtra credit)
 
