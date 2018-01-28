@@ -28,7 +28,7 @@ mat1
 
 mat2=ones(5);
 for i=1:5
-        mat2(i,:)=5*i;
+        mat2(i,:)=i*5;
 end
 mat2
 
@@ -37,22 +37,24 @@ mat2
 %     14    13    12    11    10; ...
 %     19    18    17    16    15; ...
 %     24    23    22    21    20];
-
-mat3=ones(5);
+mat3=zeros(5);
+for i=1:5
     for j=1:5
-        mat3(:,j)=((j-1)*5)+[1:5]-1;
+        mat3(i,j)=i*5-j;
     end
-mat3=(flip(mat3))';
+end
 mat3
-    
+
 % mat4=[1     2     3     4     5; ...
 %      6     7     8     9    10; ...
 %     11    12    13    14    15; ...
 %     16    17    18    19    20];
 
-mat4=ones(4,5);
+mat4=zeros(4,5);
 for i=1:4
-    mat4(i,:)=(i-1)*5+[1:5];
+    for j=1:5
+        mat4(i,j)=5*(i-1)+j;
+    end
 end
 mat4
 
@@ -63,7 +65,7 @@ mat4
 
 mat5=zeros(4,5);
 for i=1:4
-        mat5(i,:)=(i*j)-[1:5];
+        mat5(i,:)=(i*5)-[1:5];
 end
 mat5=flip(mat5);
 mat5
@@ -94,8 +96,7 @@ for i=1:4
 end
 mat7
         
-
-%Q 4.2: Indexing, matrices, length and for
+%% Q4.2: Indexing, matrices, length and for
 %You run an experiment and the data is collected into the following 3D matrix
 
 mat=zeros(4,5,2);
@@ -110,12 +111,9 @@ mat(:,:,2) = [17     5     9     9    12;
      5     6    18     5    12;
      3    18    20     8    14];
 
-% The rows represent repeated measurements, 
-% the columns represent subjects, 
-% and the 3rd dimension represents whether the subject 
-% had drunk a cup of tea before the experiment.
-% So each subject did the experiment 8 times, 
-% four times with a cup of tea, four times without.
+% The rows represent repeated measurements,the columns represent subjects, 
+% and the 3rd dimension represents whether the subject had drunk a cup of tea before the experiment.
+% So each subject did the experiment 8 times,four times with a cup of tea, four times without.
 
 % a) Find out how many scores there are greater or 
 % equal to 15.
@@ -155,68 +153,66 @@ for i=1:4
     end
 end
 mat
-% d) Calculate the mean for each subject 
-% (not including values less than or equal to 4).
-% If you feel very brave do it without using nonanmean from 
-% the github account
 
-% e) write a script where you go through each column 
-% (subject) of data, and display for each subject
-%       (i) how many NaN there are in that subject’s data, and
-%       (ii) how many values there are that are greater or equal to 15.
+% d) Calculate the mean for each subject (not including values less than or equal to 4).
+% If you feel very brave do it without using nonanmean from the github account
+nanmean(nanmean(mat),3)
 
+% e) write a script where you go through each column (subject) of data, and display for each subject
+% (i) how many NaN there are in that subject’s data
+nanPerSubject=zeros(1,5);
+for i=1:4
+    for j=1:5
+        for k=1:2
+            if isnan(mat(i,j,k))
+                nanPerSubject(1,j)=nanPerSubject(1,j)+1;
+            end
+        end
+    end
+end
+nanPerSubject              
+% (ii) how many values there are that are greater or equal to 15.
+values15orGreater=zeros(1,5);
+for i=1:4
+    for j=1:5
+        for k=1:2
+            if (mat(i,j,k))>=15
+                values15orGreater(1,j)=values15orGreater(1,j)+1;
+            end
+        end
+    end
+end
+values15orGreater
 %% Q 4.3: Logical operations, mod.
-
 % Write a script so that if x is:
+% 0, 2, 4, 6  … etc. The script prints “x is an even integer”
+% 1 3 5 7  … etc. The script prints “x is an odd integer”
+% A positive non-integer (e.g. 3.2) the script prints “x is a positive non-integer”
+% A negative non-integer (e.g. -2.2) the script prints “x is a negative non-integer”
 
- % 0, 2, 4, 6  … etc.  
- % The script prints “x is an even integer”
-
-% 1 3 5 7  … etc.  
-% The script prints “x is an odd integer”
-
-% A positive non-integer (e.g. 3.2)
- % the script prints “x is a positive non-integer”
-
-% A negative non-integer (e.g. -2.2) 
-% the script prints “x is a negative non-integer”
+x=((randn*randi(10)));
+if mod(x,2)==0
+    disp('x is an even integer');
+elseif mod(x,2)==1
+    disp('x is an odd integer');
+elseif x>0
+    disp('x is a positive non-integer');
+else
+    disp('x is a negative non-integer');
+end
+x
 
 %% Q 4.4: While
 
-% Write a script that on each loop rolls four dice and
-% displays the sum of the four dice. 
-% The program should count the number of rolls until
-% the sum of the four dice is equal to 20.
-%% and for the brave among you (xtra credit)
+% Write a script that on each loop rolls four dice and displays the sum of the four dice. 
+% The program should count the number of rolls until the sum of the four dice is equal to 20.
 
-clear all
-
-nsub=20;
-% generate a random group of men and women
-men=69+randn(nsub, 1)*3;
-women=66+randn(nsub, 1)*3;
-% calculate the real difference between them
-realdiff=mean(men)-mean(women);
-% throw all heights into a cauldron.
-
-all=[men ;women];
-
-% calculated the expected distribution of differences in means between men and women with a sample of 20 
-% if there was no genuine height difference
-for r=1:1000
-    % stir the cauldron
-    all=shuffle(all);
-    % assume first 20 are men, second 20 are women
-    m_men(r)=mean(all(1:nsub));
-    m_women(r)=mean(all(nsub+1:end));
-    m_diff(r)=m_men(r)-m_women(r);
+roll=ceil(6*rand(1,4));
+numrolls=1;
+while sum(roll)~=20
+    roll=ceil(6*rand(1,4));
+    numrolls=numrolls+1;
 end
-
-% Modify the code to find out whether the height difference between men and women would be significant 
-% with 10 individuals, 20, 100. (in matlab the command is ttest).
-
-% in a group of 100 individuals, of whom 50 were male, 50 female. 
-% How many of the 50 tallest people would be female?
-
-
- 	 
+SumDice=sum(roll)
+NumberRolls=numrolls
+	 
