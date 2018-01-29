@@ -7,7 +7,7 @@ mat=[ 3 4 5 ; 6 7 8; 9 10 11];
 max(mat')
 
 % b) Calculate the overall mean of mat.
-mean(mat(:)')
+mean(mat(:)) % don't need the transpose
 
 % c) Square each element of mat, and calculate the mean along each column.
 mean(mat.^2)
