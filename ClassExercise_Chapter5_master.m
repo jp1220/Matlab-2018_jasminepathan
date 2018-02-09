@@ -1,6 +1,4 @@
 %% Questions for Chapter 5
- 
-
 % see the word documet Exercises for chapter 5 for the images
 %% Q 5.1 Images of matrices
 
@@ -14,6 +12,8 @@ M =  [2    2     2     2     2     2
      1     1     1     1     1     2];
  
 M=ones(6);
+green=repmat([1 0 1],36,2);
+red=repmat([1 0 0],36,2);
 for i=1:6
     for j=1:6
         if j>=i
@@ -21,6 +21,9 @@ for i=1:6
         end
     end
 end
+
+image(M)
+
 
 % b) Create a color map with two colors, red and green.  Use the image command with the matrix M and the 
 % colormap command with this new color map to generate an image that looks like this:
@@ -88,34 +91,32 @@ for i=1:7
         end
     end
 end
+Z
 
 T=zeros(7,5);
 for i=1:7
     for j=1:5
         if j==3 || i==1
-            z(i,j)=1;
+            T(i,j)=1;
         end
     end
 end
+T
 % Combine Z and T to create a matrix ZT and create two colormaps (which will need to have 4 rows): 
 % cmapZ and cmapT, such that the following commands create the following two images.
 % image(ZT); axis off
 % colormap(cmapZ); 
 % colormap(cmapT)
-  
-%IMAGE3.3
+
 
 %% Q 5.4 Altering the rat random walk model 
 
 %  Alter the tightrope walker model to do the following
-
 % a) She makes the steps more quickly. (See Hints if you get stuck.)
- 
 % b) She alternates between walking frontward and backward on the tightrope
- 
 % c) When she takes a step forward  the image is green and when whs goes backward the image is green. (See Hints if you get stuck.)
- 
 % The following image incorporates all these changes.
-
 % IMAGE5.4
+
+
  
