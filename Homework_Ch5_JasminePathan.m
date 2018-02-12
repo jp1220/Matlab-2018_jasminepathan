@@ -64,54 +64,68 @@ figure(6)
 image(union)
 colormap(cmap)
 axis off; axis equal
-
 %% 5.2
 ntrials=30;
 durtrial=5*1000;
 timevec=0:2:durtrial*ntrials;
-data=sin((2*pi* timevec)/(durtrial))+.1*randn(size(timevec));
+data=sin((2*pi*timevec)/(durtrial))+.1*randn(size(timevec));
 plot(timevec, data, '-')
 % a)
-firstHalfSecIdx=[];
-repeatedVec = 1:1:250; % First 1/2 Second, split by 2ms
+firstHalfSec=[];
+repeatedVec=1:1:251;
 for i=1:30
-    firstHalfSecIdx=[firstHalfSecIdx,repeatedVec+((i-1)*2500)];
+    firstHalfSec=[firstHalfSec,repeatedVec+((i-1)*2500)];
 end
-firstHalfSecData=data(firstHalfSecIdx);
+firstHalfSec
+firstHalfSecData=data(firstHalfSec);
 mean(firstHalfSecData)
 % b)
-intervalIdx=[];
-repeatedVec = 1000:1:1250; % 2-2.5 Second-th, split by 2ms
-for i=1:30
-    intervalIdx=[intervalIdx,repeatedVec+((i-1)*2500)];
+interval=[];
+repeatedVec2=1000:1:1251;
+for j=1:30
+    interval=[interval,repeatedVec2+((j-1)*2500)];
 end
-intervalData=data(intervalIdx);
-mean(data)
+intervalData=data(interval);
+mean(intervalData)
 % c)
 timePoints=find(data>0.9);
 % d)
 timePoints=find(data>0.7 & data<0.8);
-
 %% 5.3
 %Sam Lin collects data on 70 rats. 20 of them were duds and their data were thrown away. 
-ratID=shuffle(1:70); ratID=sort(ratID(1:50)); 
-
-%On the remaining rats he collects 10000 trials, and he calculates the % correct across each bin of 100 trials.
-ratID=shuffle(1:70); ratID=sort(ratID(1:50)); 
+ratID=1:70; ratID=ratID(randperm(length(ratID))); ratID=sort(ratID(1:50)); 
+%On the remaining rats he collects 10000 trials, and he calculates the 
+% correct across each bin of 100 trials.
 binsteps=1:100:10000;
 [X, Y]=meshgrid(1:length(ratID), 1:length(binsteps));
 per=Y+randi(10, size(Y))-5;
 per(per>100)=100; per(per<0)=0;
+% a)
 image(per)
-
-
-
-
-
-
-
-
-
-
-
-
+cmap=[0,0,0;1,1,1];
+colormap(cmap)
+% b)
+per2=per;
+per2(per2>90)=100; per2(per2<10)=0;
+image(per2)
+cmap=[0,0,0; 1,1,1];
+colormap(cmap)
+% c)
+trials=per(60:70,:); 
+trialsAbove66=trials>66;
+ratsTrialsAbove66=sum(trialsAbove66);
+numRatsTrialsAbove66=nnz(ratsTrialsAbove66)
+% d)
+ratsTrialsAbove66=ratsTrialsAbove66>0;
+% e)
+for i=1:100
+    row=per(i,:);
+    trialsAbove80=row>80;
+    numRatsTrialsAbove80=nnz(trialsAbove80);
+    if numRatsTrialsAbove80>=40
+        disp(num2str(i));
+        break
+    end
+end
+% f)
+per(56:76,2:2:50)=NaN;
