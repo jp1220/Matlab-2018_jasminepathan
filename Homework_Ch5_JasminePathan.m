@@ -92,19 +92,21 @@ timePoints=find(data>0.9);
 % d)
 timePoints=find(data>0.7 & data<0.8);
 
+% NICELY DONE!!!
+
 %% 5.3
 %Sam Lin collects data on 70 rats. 20 of them were duds and their data were thrown away. 
-ratID=shuffle(1:70); ratID=sort(ratID(1:50)); 
+ratID=randperm(70); ratID=sort(ratID(1:50)); 
 
 %On the remaining rats he collects 10000 trials, and he calculates the % correct across each bin of 100 trials.
-ratID=shuffle(1:70); ratID=sort(ratID(1:50)); 
+ratID=randperm(70); ratID=sort(ratID(1:50)); 
 binsteps=1:100:10000;
 [X, Y]=meshgrid(1:length(ratID), 1:length(binsteps));
 per=Y+randi(10, size(Y))-5;
 per(per>100)=100; per(per<0)=0;
-image(per)
+image(per); colormap(gray(100));
 
-
+% have another go at this now 
 
 
 

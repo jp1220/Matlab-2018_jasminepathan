@@ -208,7 +208,7 @@ x
 % The program should count the number of rolls until the sum of the four dice is equal to 20.
 
 roll=ceil(6*rand(1,4));
-numrolls=1;
+numrolls=0; % otherwise you will be off by 1
 while sum(roll)~=20
     roll=ceil(6*rand(1,4));
     numrolls=numrolls+1;
