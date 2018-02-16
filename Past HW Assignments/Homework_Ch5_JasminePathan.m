@@ -101,14 +101,13 @@ binsteps=1:100:10000;
 per=Y+randi(10, size(Y))-5;
 per(per>100)=100; per(per<0)=0;
 % a)
-image(per)
-cmap=[0,0,0;1,1,1];
+image(per')
+cmap=gray(100);
 colormap(cmap)
 % b)
-per2=per;
-per2(per2>90)=100; per2(per2<10)=0;
-image(per2)
-cmap=[0,0,0; 1,1,1];
+
+cmap(90:100,:) = 1;
+cmap(1:10,:) = 0;
 colormap(cmap)
 % c)
 trials=per(60:70,:); 
