@@ -1,7 +1,9 @@
 % Mousebrain
 clear
 close all
-inputImagesPathName='mouse_brain/HABP/FLOX/localized/';
+inputImagesPathName=uigetdir(pwd,'Input Images');
+cd(inputImagesPathName);
+%inputImagesPathName='mouse_brain/HABP/FLOX/localized/';
 thresholdImagesPathName='thresholdImages/';
 outputCsvFileName='areas.csv';
 % ask for input continue from where you left off or start over?
