@@ -1,8 +1,7 @@
 % Mousebrain
 clear
 close all
-inputImagesPathName=uigetdir(pwd,'Input Images');
-cd(inputImagesPathName);
+inputImagesPathName=uigetdir(pwd,'Input Images Folder');
 %inputImagesPathName='mouse_brain/HABP/FLOX/localized/';
 thresholdImagesPathName='thresholdImages/';
 outputCsvFileName='areas.csv';
@@ -10,14 +9,16 @@ outputCsvFileName='areas.csv';
 cont='';
 while ~strcmp(cont,'n') && ~strcmp(cont, 'y')
     cont=input(strcat('\nDo you want to continue where you left off?\n', ...
-        'WARNING: This will delete all output files! Enter y/n: '), 's');
+        'WARNING: "n" will delete all output files! Enter y/n: '), 's');
 end
 i_start=1; % default first file number
 j_start=1; % default first file number
 syms outputCsvFile; % placeholder for output file
 if cont=='n' % start over
     delete(outputCsvFileName); % delete existing output file if any
-    rmdir(thresholdImagesPathName, 's') % delete output threshold folder if any
+    if exist(thresholdImagesPathName,'dir')
+        rmdir(thresholdImagesPathName, 's') % delete output threshold folder if any
+    end
     outputCsvFile=fopen(outputCsvFileName,'w'); % create new file with write permissions
 else % continue where left off
     % Get the name of last file that was analyzed from the CSV file
@@ -51,11 +52,12 @@ for i=i_start:5
         fileNameWithoutExtension=strcat('flox',num2str(i),' cortex',num2str(j));
         fileName=strcat(fileNameWithoutExtension,'.TIF');
         fprintf('\n\nCurrent File: %s\n', fileName);
-        fullFileName=strcat(inputImagesPathName,fileName);
+        fullFileName=strcat(inputImagesPathName,'/',fileName);
         img=imread(fullFileName,1); % open image file
         origimg=double(img(:, :, 2)); % always use channel 2
         croppedimg=origimg; 
-        figure(1); imagesc(croppedimg); colormap(gray); 
+        figure(1); imagesc(croppedimg); colormap(gray);
+        set(gcf,'Name','Original Image (click two points to crop out unwanted region)');
         % crop bad regions
         isdone='x'; r=[]; c=[];
         while ~strcmp(isdone, 'q')
@@ -67,9 +69,18 @@ for i=i_start:5
             if isdone=='q'
                 imagesc(croppedimg); colormap(gray);
                 thresholdFigure=figure(2);
+                set(gcf,'Name','Output Images');
                 subplot(2,2,1); imagesc(origimg); % display original image
+                title('Original Thresholded Image');
                 subplot(2,2,2); imagesc(croppedimg); % display cropped image
-                subplot(2,2,4); hist(origimg(:)); % display histogram
+                title('Cropeed Thresholded Image');
+                croppedArea=round(abs(r(2)-r(1)))*round(abs(c(2)-c(1))); % calculate percent area cropped
+                [m,n]=size(origimg);
+                imageArea=m*n;
+                percentCropped=(croppedArea/imageArea)*100;
+                croppedAndNotCropped=[percentCropped (100-percentCropped)];
+                subplot(2,2,4); pie(croppedAndNotCropped); % display pie chart
+                title('Percentage Cropped');
                 thr=129; % change threshold here accordingly
                 imgT=origimg(:);
                 imgT(imgT<=thr)=0; imgT(imgT>thr)=1;
@@ -77,6 +88,7 @@ for i=i_start:5
                 numOverThresholds=nnz(imgT);
                 numPixels=length(find(~isnan(imgT)));
                 subplot(2,2,3); imagesc(imgT); % display values below threshold
+                title('Threshold Analyzed Image');
                 area=100-numOverThresholds/numPixels*100; % calculate percentage of area stained
                 fprintf('Area: %s%%',num2str(area)); % display the computed area
                 fprintf(outputCsvFile,'%s,%s\n',fileName,num2str(area)); % print it to the output file too
