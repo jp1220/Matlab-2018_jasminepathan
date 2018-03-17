@@ -1,7 +1,9 @@
 % Mousebrain
 
 close all
-pathName='/Users/jasminepathan/Desktop/Matlab/Matlab-2018_jasminepathan/mouse_brain/HABP/FLOX/localized/';
+
+pathName=uigetdir;
+% pathName='/Users/jasminepathan/Desktop/Matlab/Matlab-2018_jasminepathan/mouse_brain/HABP/FLOX/localized/';
 for i=1:5
     for j=1:3 
         figure

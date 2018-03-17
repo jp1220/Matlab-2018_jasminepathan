@@ -57,7 +57,7 @@ image3(rightRad<.25 & X>0 & X<.25)=.75; %right moon half thingy
 
 figure(3)
 clf
-image3=image3(170:830, 100:900);
+image3=image3(170:930, 100:900);
 imagesc(X(1,:),Y(:,1),image3);
 colormap(cmap)
 axis equal
