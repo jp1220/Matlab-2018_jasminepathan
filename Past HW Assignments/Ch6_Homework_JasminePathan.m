@@ -1,0 +1,98 @@
+%% 6.1
+clear all
+n=1000;
+m=1000;
+[X,Y]=meshgrid(linspace(-2,2,n),linspace(-1.5,1.5,m));
+cmap=[.3,.3,.3;.5,.5,.5;.75,.75,.75;1,1,1];
+
+% a)
+image1=X;
+rad=sqrt(X.^2+Y.^2);
+image1(X>-3 & X<3 & Y>-2 & Y<2)=1; %background
+image1(X>-1.75 & X<0 & Y>-1.25 & Y<1.25)=.25; %left rectangle
+image1(X>0 & X<1.75 & Y>-1.25 & Y<1.25)=.75; %right rectangle
+image1(rad<.75)=.55; %donut thingy
+image1(rad<.25 & X>-.25 & X<0)=.25; %left moon half thingy
+image1(rad<.25 & X>0 & X<.25)=.75; %right moon half thingy
+
+figure(1)
+clf
+imagesc(X(1,:),Y(:,1),image1);
+colormap(cmap)
+axis equal
+axis tight
+axis off
+
+% b)
+image2=X;
+leftRad=sqrt((X+.25).^2+Y.^2);
+rightRad=sqrt((X-.25).^2+Y.^2);
+image2(X>-3 & X<3 & Y>-2 & Y<2)=1; %background
+image2(X>-2 & X<-.25 & Y>-1.25 & Y<1.25)=.25; %left rectangle
+image2(X>.25 & X<2 & Y>-1.25 & Y<1.25)=.75; %right rectangle
+image2(leftRad<.75 & X<-.25)=.55; %left donut half thingy
+image2(rightRad<.75 & X>.25)=.55; %right donut half thingy
+image2(leftRad<.25 & X>-.75 & X<-.25)=.25; %left moon half thingy
+image2(rightRad<.25 & X>.25 & X<.75)=.75; %right moon half thingy
+
+figure(2)
+clf
+imagesc(X(1,:),Y(:,1),image2);
+colormap(cmap)
+axis equal
+axis tight
+axis off
+
+% c)
+image3=X;
+leftRad=sqrt(X.^2+(Y+.25).^2);
+rightRad=sqrt(X.^2+(Y-.25).^2);
+image3(X>-3 & X<3 & Y>-2 & Y<2)=1; %background
+image3(X>-1.75 & X<0 & Y>-1.5 & Y<1)=.25; %left rectangle
+image3(X>0 & X<1.75 & Y>-1 & Y<1.5)=.75; %right rectangle
+image3(leftRad<.75 & X<0)=.55; %left donut half thingy
+image3(rightRad<.75 & X>0)=.55; %right donut half thingy
+image3(leftRad<.25 & X>-.25 & X<0)=.25; %left moon half thingy
+image3(rightRad<.25 & X>0 & X<.25)=.75; %right moon half thingy
+
+figure(3)
+clf
+image3=image3(170:830, 100:900);
+imagesc(X(1,:),Y(:,1),image3);
+colormap(cmap)
+axis equal
+axis tight
+axis off
+%% 6.2 Funkystim
+n=1000;
+m=1000;
+[X,Y]=meshgrid(linspace(-2,2,n),linspace(-2,2,m));
+
+% a)
+rad=sqrt(X.^2+Y.^2);
+ang=atan2(Y,X);
+image1=mod(ang,pi/6);
+background=mod(-ang,pi/6);
+image1(rad>1.5)=background(rad>1.5);
+figure(4)
+clf
+imagesc(X(1,:),Y(:,1),image1);
+colormap(gray)
+axis equal
+axis tight
+axis off
+
+% b)
+rad=sqrt(X.^2+Y.^2);
+ang=atan2(Y,X);
+ang2=atan2(Y,X)-pi/12;
+image2=mod(ang,pi/6);
+background2=mod(-ang2,pi/6);
+image2(rad>1.5)=background2(rad>1.5);
+figure(5)
+clf
+imagesc(X(1,:),Y(:,1),image2);
+colormap(gray(64))
+axis equal
+axis tight
+axis off
